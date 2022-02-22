@@ -1,0 +1,13 @@
+﻿using DogGoMVC.Models;
+using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
+
+namespace DogGoMVC.Repositories
+{
+    public interface IOwnerRepository
+    {
+        List<Owner> GetAllOwners();
+
+        Owner GetOwnerById(int id);
+    }
+}
