@@ -1,42 +1,93 @@
-﻿@model DogGoMVC.Models.Walker
-
-@{
-    ViewData["Title"] = "Details";
-}
-
-<h1>Details</h1>
-
+﻿@model DogGoMVC.Models.ViewModels.WalkerProfileViewModel 
+@{ ViewData["Title"] ="Profile"; }
 <div>
-    <h4>Walker</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NeighborhoodId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NeighborhoodId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            <img class="bg-info" src="@Model.ImageUrl" alt="avatar" />
-        </dd>
-    </dl>
+  
+
+  <section class="container">
+      
+ <img src="@Model.Walker.ImageUrl" style="width:50px" />
+ <div>
+     <label class="font-weight-bold">Name:</label>
+       <span>@Model.Walker.Name</span>
+  </div>
+         @foreach (Neighborhood neighborhood in Model.Neighborhood) {
+     @if (Model.Walker.NeighborhoodId == neighborhood.Id) {
+               
+
+      <label class="font-weight-bold">Neighborhood:</label>
+       <span>@neighborhood.Name</span>
+    
+          } 
+          
+         }
+       
+  </section>
+         
+  <hr class="mt-5" />
+  <div class="clearfix"></div>
+
+  <div class="row">
+    <section class="col-8 container mt-5">
+      <h1 class="text-left">Walks</h1>
+
+      <div class="row">
+        @foreach (Walks walks in Model.Walks) {
+          
+          <div class="card-body">
+            <div>
+              <label class="font-weight-bold">Date:</label>
+              <span>@walks.Date</span>
+            </div>
+
+            <div>
+                @{  int walksum = 0;
+                    walksum += Convert.ToInt32(walks.Duration);
+                    TimeSpan durationSpan = TimeSpan.FromSeconds(walksum);
+              <label class="font-weight-bold">Duration:</label>
+              <span> @durationSpan.Minutes Min</span>}
+            </div>
+          </div>
+        
+            @foreach (Owner owner in Model.Owner) {
+     @if (walks.WalkerId == Model.Walker.Id) {
+                    @foreach (Dog dog in Model.Dog) {
+                                @if (  dog.OwnerId == owner.Id)
+                                {
+                                     <div>
+              <label class="font-weight-bold">Client:</label>
+              <span>@owner.Name</span>
+            </div> 
+                                }
+                            }
+  
+     }
+    
+            }
+     }
+         </div>
+    </section>
+    <section class="col-lg-4 col-md-8 container mt-5">
+      <h1>Total Walk Time</h1>
+
+      <ul class="list-group mt-4">
+                @{
+                    
+                    int sum = 0;
+                   
+                    foreach (Walks walk in Model.Walks)
+                    {
+                        sum += Convert.ToInt32(walk.Duration);
+                    }
+                     TimeSpan span = TimeSpan.FromSeconds(sum);
+                    <li class="list-group-item disabled" aria-disabled="true">
+          <span class="font-weight-bold ml-4">@span.Hours Hrs @span.Minutes Mins</span>
+        </li>
+        }
+      </ul>
+    </section>
+  </div>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new {  id = Model.Id  }) |
+    @Html.ActionLink("Edit", "Edit", new {  id = Model.Walker.Id  }) |
     <a asp-action="Index">Back to List</a>
 </div>

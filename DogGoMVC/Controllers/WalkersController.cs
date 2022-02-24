@@ -1,4 +1,5 @@
 ﻿using DogGoMVC.Models;
+using DogGoMVC.Models.ViewModels;
 using DogGoMVC.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,14 +9,26 @@ namespace DogGoMVC.Controllers
 {
     public class WalkersController : Controller
     {
-
-
+        private readonly IOwnerRepository _ownerRepo;
+        private readonly IDogRepository _dogRepo;
         private readonly IWalkerRepository _walkerRepo;
+        private readonly INeighborhoodRepository _neighborhoodRepo;
+        private readonly IWalksRepository _walksRepo;
 
-        // ASP.NET will give us an instance of our Walker Repository. This is called "Dependency Injection"
-        public WalkersController(IWalkerRepository walkerRepository)
+        public WalkersController(
+            IOwnerRepository ownerRepository,
+            IDogRepository dogRepository,
+            IWalkerRepository walkerRepository,
+            INeighborhoodRepository neighborhoodRepository,
+            IWalksRepository walksRepository)
+
         {
+            _ownerRepo = ownerRepository;
+            _dogRepo = dogRepository;
             _walkerRepo = walkerRepository;
+            _neighborhoodRepo = neighborhoodRepository;
+            _walksRepo = walksRepository;
+
         }
         // GET: HomeController
         // GET: Walkers
@@ -31,13 +44,23 @@ namespace DogGoMVC.Controllers
         public ActionResult Details(int id)
         {
             Walker walker = _walkerRepo.GetWalkerById(id);
+            List<Walks> walks = _walksRepo.GetWalksByWalkerId(walker.Id);
+            List <Neighborhood> neighborhood = _neighborhoodRepo.GetAll();
+            List<Owner> owner = _ownerRepo.GetAllOwners();
+            List <Dog> dogs = _dogRepo.GetDogsByOwnerId(walker.Id);
 
-            if (walker == null)
+
+
+            WalkerProfileViewModel vm = new WalkerProfileViewModel()
             {
-                return NotFound();
-            }
+                Walker = walker,
+                Walks = walks,
+                Neighborhood = neighborhood,
+                Owner = owner,
+                Dog = dogs
+            };
 
-            return View(walker);
+            return View(vm);
         }
 
         // GET: HomeController/Create
