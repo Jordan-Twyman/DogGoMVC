@@ -8,6 +8,8 @@ namespace DogGoMVC.Models.ViewModels
         public List<Walker> Walkers { get; set; }
         public List<Dog> Dogs { get; set; }
 
+        public List<int> SelectedDogs { get; set; } = new List<int>();
+
 /*        public WalkerProfileViewModel WalkerProfile     { get; set; }
 */
     }

@@ -62,49 +62,58 @@ namespace DogGoMVC.Controllers
         // POST: Owners/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Walks walk)
+        public ActionResult Create(WalkFormViewModel vm)           // Create(Walks walks)
         {
             try
             {
-                // Get the values from multiselect in create form before creating new walks
-                // They will be in Key/Value pairs but I just want the value since it's iterable
-                // The iterable variable dogIds will have each value that was selected
-                var dogIds = Request.Form["Walks.dogId"];
-                var walkerId = Request.Form["Walks.walkerId"];
-                var duration = Request.Form["Walks.duration"];
-                var id = Request.Form["Walks.id"];
+                //var date = Request.Form["Walks.Date"];
+
+                //var dogIds = Request.Form["Walks.DogId"];
+                //var walkerId = Request.Form["Walks.WalkerId"];
+                //var duration = Request.Form["Walks.Duration"];
+
+                //walk.Date = DateTime.Parse(date);
+                //walk.Duration = Int32.Parse(duration);
+                //walk.WalkerId = Int32.Parse(walkerId);
 
 
+                //foreach (var dogId in dogIds)
+                //{
 
-                // Iterate over the ids that were selected in the form and create a new record
-                // for each of the values that were selected in the multiselect
-                foreach (var dogId in dogIds)
+                //    walks.DogId = Int32.Parse(dogId);
+                //    _walksRepo.AddWalks(walks);
+                //}
+
+
+                //_walksRepo.AddWalks(walks);
+
+
+                //This is the working code for the View Model*************************************
+
+                var dogIds = Request.Form["Walks.DogId"];
+
+
+                foreach (string id in dogIds)
                 {
-                    // They will be string so convert to int then
-                    // let the repo take care of the work
-                    walk.DogId = Int32.Parse(dogId);
-                    _walksRepo.AddWalks(walk);
+                    
+                    vm.Walks.DogId = Int32.Parse(id);
+                    _walksRepo.AddWalks(vm.Walks);
                 }
-                walk.Duration = Int32.Parse(duration);
-                walk.WalkerId = Int32.Parse(walkerId);
-                walk.Id = Int32.Parse(id);
-
-                _walksRepo.AddWalks(walk);
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch(Exception ex) 
             {
                 // It's important to replicate the Get functionality into the catch of the Post
                 // I was experiencing errors here as well as the OwnersController and couldn't
                 // figure out why... turns out this did the trick.. maybe not best solution
                 // but it doesn't break now at least.
-                WalkFormViewModel vm = new WalkFormViewModel()
-                {
-                    Walks = new Walks(),
-                    Walkers = _walkerRepo.GetAllWalkers(),
-                    Dogs = _dogRepo.GetAllDogs()
-                };
+                //WalkFormViewModel vm = new WalkFormViewModel()
+                //{
+                //    Walks = new Walks(),
+                //    Walkers = _walkerRepo.GetAllWalkers(),
+                //    Dogs = _dogRepo.GetAllDogs()
+                //};
                 return View(vm);
             }
         }

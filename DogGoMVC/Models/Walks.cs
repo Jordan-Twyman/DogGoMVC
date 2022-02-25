@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 
@@ -14,7 +15,10 @@ namespace DogGoMVC.Models
 
         public int WalkerId { get; set; }
         public int DogId { get; set; }
-        public DateTime Date { get; set; }
+
+        [DataType(DataType.Date)]   
+
+        public DateTime? Date { get; set; }
 
         
 
