@@ -44,11 +44,11 @@ namespace DogGoMVC.Repositories
                     {
                         Walks walk = new Walks
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
-                            Date = reader.GetDateTime(reader.GetOrdinal("Date")),
-                            Duration = reader.GetInt32(reader.GetOrdinal("Duration")),
-                            WalkerId = reader.GetInt32(reader.GetOrdinal("WalkerId")),
-                            DogId = reader.GetInt32(reader.GetOrdinal("DogId")) 
+                            Id = reader.IsDBNull(reader.GetOrdinal("Id")) ? 1 : reader.GetInt32(reader.GetOrdinal("Id")),
+                            Date = reader.IsDBNull(reader.GetOrdinal("Date")) ? System.DateTime.Now : reader.GetDateTime(reader.GetOrdinal("Date")),
+                            Duration = reader.IsDBNull(reader.GetOrdinal("Duration")) ? 0 : reader.GetInt32(reader.GetOrdinal("Duration")),
+                            WalkerId = reader.IsDBNull(reader.GetOrdinal("WalkerId")) ? 1 : reader.GetInt32(reader.GetOrdinal("WalkerId")),
+                            DogId = reader.IsDBNull(reader.GetOrdinal("DogId")) ? 1 : reader.GetInt32(reader.GetOrdinal("DogId")) 
 
 
                         };

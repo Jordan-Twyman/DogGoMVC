@@ -31,9 +31,10 @@
       <h1 class="text-left">Walks</h1>
 
       <div class="row">
-        @foreach (Walks walks in Model.Walks) {
+       
           
           <div class="card-body">
+               @foreach (Walks walks in Model.Walks) {
             <div>
               <label class="font-weight-bold">Date:</label>
               <span>@walks.Date</span>
@@ -46,12 +47,12 @@
               <label class="font-weight-bold">Duration:</label>
               <span> @durationSpan.Minutes Min</span>}
             </div>
-          </div>
+          
         
             @foreach (Owner owner in Model.Owner) {
-     @if (walks.WalkerId == Model.Walker.Id) {
-                    @foreach (Dog dog in Model.Dog) {
-                                @if (  dog.OwnerId == owner.Id)
+            @if (walks.WalkerId == Model.Walker.Id) {
+            @foreach (Dog dog in Model.Dog) {
+            @if (  dog.OwnerId == owner.Id)
                                 {
                                      <div>
               <label class="font-weight-bold">Client:</label>
