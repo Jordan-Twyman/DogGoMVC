@@ -1,9 +1,11 @@
 ﻿using DogGoMVC.Models;
 using DogGoMVC.Models.ViewModels;
 using DogGoMVC.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace DogGoMVC.Controllers
 {
@@ -32,11 +34,18 @@ namespace DogGoMVC.Controllers
         }
         // GET: HomeController
         // GET: Walkers
+        [AllowAnonymous]
         public ActionResult Index()
         {
-            List<Walker> walkers = _walkerRepo.GetAllWalkers();
+            int walkerId = GetCurrentUserId();
+
+            List<Walker> walkers = _walkerRepo.GetWalkersInNeighborhood(walkerId);
+
+             
 
             return View(walkers);
+
+            List<Walker> allWalkers = _walkerRepo.GetAllWalkers();
         }
 
         // GET: HomeController/Details/5
@@ -126,6 +135,11 @@ namespace DogGoMVC.Controllers
             {
                 return View();
             }
+        }
+        public int GetCurrentUserId()
+        {
+            string id = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            return int.Parse(id);
         }
     }
 }
