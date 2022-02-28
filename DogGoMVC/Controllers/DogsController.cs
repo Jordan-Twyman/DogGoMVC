@@ -129,11 +129,15 @@ namespace DogGoMVC.Controllers
             {
 
                 return NotFound();
-                    }
-            
-            
+                   
+            }
+
+            else 
+            {
                 return View(dog);
-            
+
+            }
+
         }
 
 

@@ -207,7 +207,7 @@ namespace DogGoMVC.Repositories
                     cmd.Parameters.AddWithValue("@breed", dog.Breed);
                     if (dog.Notes == null)
                     {
-                        cmd.Parameters.AddWithValue("@notes", null);
+                        cmd.Parameters.AddWithValue("@notes", "");
                     }
                     else
                     {
@@ -215,7 +215,7 @@ namespace DogGoMVC.Repositories
                     }
                     if (dog.ImageUrl == null)
                     {
-                        cmd.Parameters.AddWithValue("@imageurl", "null");
+                        cmd.Parameters.AddWithValue("@imageurl", "");
                     }
                     else 
                     {
